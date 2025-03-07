@@ -32,7 +32,7 @@ function App() {
         if (file.category.course === true) {
           const courseWideFile: FileItem = {
             id: `${fileSubGroup}-course-wide-${file.name}`,
-            name: "Themabreed",
+            name: "Course-wide",
             type: "course-wide",
             fileFormat: "pdf",
           };
@@ -46,7 +46,7 @@ function App() {
           for (let i = 1; i <= 4; i++) {
             const chapterFile: FileItem = {
               id: `${fileSubGroup}-chapter-${i}-${file.name}`,
-              name: `Deel ${i}`,
+              name: `Chapter ${i}`,
               type: "chapter",
               fileFormat: "pdf",
             };
@@ -58,10 +58,10 @@ function App() {
         }
 
         if (file.category.tile === true) {
-          for (let i = 1; i <= 3; i++) {
+          for (let i = 1; i <= 12; i++) {
             const tileFile: FileItem = {
               id: `${fileSubGroup}-tile-${i}-${file.name}`,
-              name: `Tegel ${i}`,
+              name: `Tile ${i}`,
               type: "tile",
               fileFormat: "pdf",
             };

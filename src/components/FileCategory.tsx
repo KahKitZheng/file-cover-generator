@@ -32,7 +32,7 @@ export default function FileCategory(props: Readonly<FileCategoryProps>) {
           >
             {/* <input type="checkbox" name="" id="" /> */}
             <FileText size={16} />
-            <p className="text-sm font-medium">{title}</p>
+            <p className="text-sm font-medium">{`${title} (${files.length})`}</p>
           </div>
           <div className="flex items-center gap-2">
             <button

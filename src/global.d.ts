@@ -1,13 +1,22 @@
-type Template = Record<string, string[]>;
+type CourseTypeTemplate = {
+  name: string;
+  category: {
+    course: boolean;
+    chapter: boolean;
+    tile: boolean;
+  };
+};
 
+type Template = Record<string, CourseTypeTemplate[]>;
+
+// Files
 type FileType = "course-wide" | "chapter" | "tile";
+
 type FileFormat = "pdf";
 
-interface FileItem {
+type FileItem = {
   id: string;
   name: string;
   type: FileType;
-  format: FileFormat;
-  isGenerated: boolean;
-  isGenerating: boolean;
-}
+  fileFormat: FileFormat;
+};

@@ -7,10 +7,7 @@ export function useFileGeneration() {
    * Generates a single file and downloads it
    */
   const generateFile = async (file: FileItem, download: boolean) => {
-    const updatedFile = { ...file, isGenerating: true };
-
-    updatedFile.isGenerated = true;
-    updatedFile.isGenerating = false;
+    const updatedFile = { ...file };
 
     // Download the generated file
     const content = new Blob([generatePDFContent(updatedFile)], {
@@ -18,7 +15,7 @@ export function useFileGeneration() {
     });
 
     if (download) {
-      downloadFile(content, `${file.name}.${file.format}`);
+      downloadFile(content, `${file.name}.${file.fileFormat}`);
     }
 
     return updatedFile;
@@ -27,8 +24,7 @@ export function useFileGeneration() {
   /**
    * Generates multiple files and downloads them as a zip
    */
-  const generateFiles = async (files: FileItem[]) => {
-    const filesToGenerate = files.filter((f) => !f.isGenerated);
+  const generateFiles = async (filesToGenerate: FileItem[]) => {
     const totalFiles = filesToGenerate.length;
 
     const generatedFiles: FileItem[] = [];

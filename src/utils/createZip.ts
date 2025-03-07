@@ -25,7 +25,7 @@ export async function createZipWithFiles(
       folder = folder.folder(file.type) || folder;
     }
 
-    folder.file(`${file.name}.${file.format}`, content);
+    folder.file(`${file.name}.${file.fileFormat}`, content);
   }
 
   return zip.generateAsync({ type: "blob" });

@@ -1,49 +1,80 @@
 import FileType from "./FileType";
-
-const files: FileItem[] = [
-  {
-    id: "course-wide",
-    name: "Themabreed",
-    type: "course-wide",
-    format: "pdf",
-    isGenerated: false,
-    isGenerating: false,
-  },
-  {
-    id: "chapter-1",
-    name: "Deel 1",
-    type: "chapter",
-    format: "pdf",
-    isGenerated: false,
-    isGenerating: false,
-  },
-  {
-    id: "tile-1",
-    name: "Tegel 1",
-    type: "tile",
-    format: "pdf",
-    isGenerated: false,
-    isGenerating: false,
-  },
-  {
-    id: "tile-2",
-    name: "Tegel 2",
-    type: "tile",
-    format: "pdf",
-    isGenerated: false,
-    isGenerating: false,
-  },
-  {
-    id: "tile-3",
-    name: "Tegel 3",
-    type: "tile",
-    format: "pdf",
-    isGenerated: false,
-    isGenerating: false,
-  },
-];
+import { WO_TEMPLATE } from "../course-type-templates/wo-template";
+import { useState } from "react";
 
 function App() {
+  const [courseType, setCourseType] = useState("wo");
+  const [fileStructure, setFileStructure] = useState(
+    getCourseTypeFileTemplate(),
+  );
+
+  function getCourseTypeTemplate() {
+    switch (courseType) {
+      case "wo":
+        return WO_TEMPLATE;
+      default:
+        return WO_TEMPLATE;
+    }
+  }
+
+  function getCourseTypeFileTemplate() {
+    const fileStructure: Record<string, CourseTypeTemplate[]> =
+      getCourseTypeTemplate();
+
+    prepareFiles(fileStructure);
+
+    return fileStructure;
+  }
+
+  function prepareFiles(fileStructure: Record<string, CourseTypeTemplate[]>) {
+    return Object.values(fileStructure).forEach((fileSubGroup) => {
+      fileSubGroup.forEach((file) => {
+        if (file.category.course === true) {
+          const courseWideFile: FileItem = {
+            id: `${fileSubGroup}-course-wide-${file.name}`,
+            name: "Themabreed",
+            type: "course-wide",
+            fileFormat: "pdf",
+          };
+
+          if (!file.files.some((f) => f.id === courseWideFile.id)) {
+            file.files.push(courseWideFile);
+          }
+        }
+
+        if (file.category.chapter === true) {
+          for (let i = 1; i <= 4; i++) {
+            const chapterFile: FileItem = {
+              id: `${fileSubGroup}-chapter-${i}-${file.name}`,
+              name: `Deel ${i}`,
+              type: "chapter",
+              fileFormat: "pdf",
+            };
+
+            if (!file.files.some((f) => f.id === chapterFile.id)) {
+              file.files.push(chapterFile);
+            }
+          }
+        }
+
+        if (file.category.tile === true) {
+          for (let i = 1; i <= 3; i++) {
+            const tileFile: FileItem = {
+              id: `${fileSubGroup}-tile-${i}-${file.name}`,
+              name: `Tegel ${i}`,
+              type: "tile",
+              fileFormat: "pdf",
+            };
+
+            if (!file.files.some((f) => f.id === tileFile.id)) {
+              file.files.push(tileFile);
+            }
+          }
+        }
+      });
+    });
+  }
+
   return (
     <div className="relative mx-auto flex h-full max-w-5xl flex-col gap-4 px-4 py-12">
       <header className="flex items-baseline justify-between">
@@ -68,8 +99,20 @@ function App() {
         </div>
 
         <div className="col-span-2 grid auto-rows-max gap-2">
-          <FileType fileName="Doeboek" files={files} />
-          <FileType fileName="Antwoorden doeboek" files={files} />
+          {Object.keys(fileStructure).map((fileSubGroup) => (
+            <div key={fileSubGroup} className="mb-8 grid gap-2">
+              <h2 className="border-l-4 border-l-red-400 pl-3 text-xl font-bold">
+                {fileSubGroup}
+              </h2>
+              {fileStructure[fileSubGroup].map((file) => (
+                <FileType
+                  key={file.name}
+                  fileName={file.name}
+                  files={file.files}
+                />
+              ))}
+            </div>
+          ))}
         </div>
       </div>
     </div>

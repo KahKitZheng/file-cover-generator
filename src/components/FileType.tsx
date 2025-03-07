@@ -24,7 +24,12 @@ export default function FileType(props: Readonly<FileTypeProps>) {
 
     return (
       typeAvailable && (
-        <FileCategory title={title} type={type} files={filesByType[type]} />
+        <FileCategory
+          title={title}
+          type={type}
+          fileName={fileName}
+          files={filesByType[type]}
+        />
       )
     );
   }

@@ -7,11 +7,12 @@ import Button from "./Button";
 type FileCategoryProps = {
   title: string;
   type: FileType;
+  fileName: string;
   files: FileItem[];
 };
 
 export default function FileCategory(props: Readonly<FileCategoryProps>) {
-  const { title, type, files } = props;
+  const { title, type, fileName, files } = props;
   const { generateFiles, downloadFilesAsZip } = useFileGeneration();
 
   const [isCollapsed, setIsCollapsed] = useState(true);
@@ -20,7 +21,7 @@ export default function FileCategory(props: Readonly<FileCategoryProps>) {
     const filesToGenerate = files.filter((f) => f.type === type);
     const generatedFiles = await generateFiles(filesToGenerate);
 
-    await downloadFilesAsZip(generatedFiles, `${title}-files.zip`);
+    await downloadFilesAsZip(generatedFiles, `${fileName}-${type}.zip`);
   };
 
   return (

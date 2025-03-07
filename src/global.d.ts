@@ -5,6 +5,7 @@ type CourseTypeTemplate = {
     chapter: boolean;
     tile: boolean;
   };
+  files: FileItem[];
 };
 
 type Template = Record<string, CourseTypeTemplate[]>;

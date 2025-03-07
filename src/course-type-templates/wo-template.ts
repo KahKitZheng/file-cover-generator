@@ -1,77 +1,91 @@
 import { FILE_NAME } from "../constants/file-name";
 import { FILE_SUBGROUP } from "../constants/file-subgroup";
 
-const TEACHER_MATERIALS = [
+const TEACHER_MATERIALS: CourseTypeTemplate[] = [
   {
     name: FILE_NAME.THEMAVOORBEREIDING,
-    formats: { course: true, chapter: true, tile: true },
+    category: { course: true, chapter: true, tile: true },
+    files: [],
   },
   {
     name: FILE_NAME.ACHTERGRONDINFORMATIE,
-    formats: { course: false, chapter: false, tile: false },
+    category: { course: true, chapter: false, tile: false },
+    files: [],
   },
   // GLOBAL_FILE_NAME.TIJDSVAKKENOVERZICHT,
   {
     name: FILE_NAME.MATERIALENLIJST,
-    formats: { course: false, chapter: false, tile: false },
+    category: { course: true, chapter: false, tile: false },
+    files: [],
   },
 ];
 
-const TEACHING_MATERIALS = [
+const TEACHING_MATERIALS: CourseTypeTemplate[] = [
   {
     name: FILE_NAME.DOEBOEK,
-    formats: { course: true, chapter: true, tile: true },
+    category: { course: true, chapter: true, tile: true },
+    files: [],
   },
   {
     name: FILE_NAME.ANTWOORDEN_DOEBOEK,
-    formats: { course: true, chapter: true, tile: true },
+    category: { course: true, chapter: true, tile: true },
+    files: [],
   },
   {
     name: FILE_NAME.WERKBLAD,
-    formats: { course: true, chapter: true, tile: true },
+    category: { course: true, chapter: true, tile: true },
+    files: [],
   },
   {
     name: FILE_NAME.ANTWOORDEN_WERKBLAD,
-    formats: { course: true, chapter: true, tile: true },
+    category: { course: true, chapter: true, tile: true },
+    files: [],
   },
 ];
 
-const EXTRA_TEACHING_MATERIALS = [
+const EXTRA_TEACHING_MATERIALS: CourseTypeTemplate[] = [
   {
     name: FILE_NAME.SAMENVATTING,
-    formats: { course: false, chapter: false, tile: false },
+    category: { course: true, chapter: false, tile: false },
+    files: [],
   },
   {
     name: FILE_NAME.BELANGRIJKE_WOORDEN,
-    formats: { course: false, chapter: false, tile: false },
+    category: { course: true, chapter: false, tile: false },
+    files: [],
   },
   // GLOBAL_FILE_NAME.VOORTGANGSBLAD,
   {
     name: FILE_NAME.EXTRA_LESMATERIAAL,
-    formats: { course: false, chapter: false, tile: false },
+    category: { course: true, chapter: false, tile: false },
+    files: [],
   },
 ];
 
-const DIFFERENTIATION_MATERIALS = [
+const DIFFERENTIATION_MATERIALS: CourseTypeTemplate[] = [
   {
     name: FILE_NAME.WERKBLAD,
-    formats: { course: false, chapter: false, tile: false },
+    category: { course: true, chapter: true, tile: true },
+    files: [],
   },
   {
     name: FILE_NAME.ANTWOORDEN_WERKBLAD,
-    formats: { course: false, chapter: false, tile: false },
+    category: { course: true, chapter: true, tile: true },
+    files: [],
   },
   {
     name: FILE_NAME.DOEBOEK,
-    formats: { course: false, chapter: false, tile: false },
+    category: { course: true, chapter: true, tile: true },
+    files: [],
   },
   {
     name: FILE_NAME.ANTWOORDEN_DOEBOEK,
-    formats: { course: false, chapter: false, tile: false },
+    category: { course: true, chapter: true, tile: true },
+    files: [],
   },
 ];
 
-export const TEMPLATE_DEFAULT: Template = {
+export const WO_TEMPLATE = {
   [FILE_SUBGROUP.LEERKRACHTENMATERIAAL]: TEACHER_MATERIALS,
   [FILE_SUBGROUP.LESMATERIAAL]: TEACHING_MATERIALS,
   [FILE_SUBGROUP.EXTRA_LESMATERIAAL]: EXTRA_TEACHING_MATERIALS,

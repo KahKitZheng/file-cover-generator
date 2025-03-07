@@ -29,10 +29,10 @@ export default function FileType(props: Readonly<FileTypeProps>) {
   }
 
   return (
-    <div className="grid gap-2 rounded-lg border border-neutral-200 px-2 py-4">
+    <div className="grid gap-2 rounded-lg border border-neutral-200 p-4">
       <div className="flex justify-between">
         <div
-          className="ml-2 flex cursor-pointer items-center gap-2"
+          className="flex cursor-pointer items-center gap-2"
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
           {/* <input type="checkbox" name="" id="" /> */}

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useFileGeneration } from "../hooks/useFileGeneration";
 import { FileText, ChevronUp, ChevronDown } from "lucide-react";
 import FileCategoryEntry from "./FileCategoryEntry";
+import Button from "./Button";
 
 type FileCategoryProps = {
   title: string;
@@ -31,27 +32,11 @@ export default function FileCategory(props: Readonly<FileCategoryProps>) {
             onClick={() => setIsCollapsed(!isCollapsed)}
           >
             {/* <input type="checkbox" name="" id="" /> */}
+            {isCollapsed ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
             <FileText size={16} />
             <p className="text-sm font-medium">{`${title} (${files.length})`}</p>
           </div>
-          <div className="flex items-center gap-2">
-            <button
-              className="cursor-pointer rounded-lg border border-neutral-200 bg-white px-3 py-2 text-xs font-medium"
-              onClick={handleBulkGenerateFileCategory}
-            >
-              Download all
-            </button>
-            <button
-              className="cursor-pointer"
-              onClick={() => setIsCollapsed(!isCollapsed)}
-            >
-              {isCollapsed ? (
-                <ChevronUp size={16} />
-              ) : (
-                <ChevronDown size={16} />
-              )}
-            </button>
-          </div>
+          <Button onClick={handleBulkGenerateFileCategory}>Download</Button>
         </div>
       </div>
 

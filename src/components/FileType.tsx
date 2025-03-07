@@ -1,6 +1,7 @@
 import { FileText, ChevronUp, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import FileCategory from "./FileCategory";
+import Button from "./Button";
 
 type FileTypeProps = {
   fileName: string;
@@ -35,20 +36,13 @@ export default function FileType(props: Readonly<FileTypeProps>) {
           className="flex cursor-pointer items-center gap-2"
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
+          {isCollapsed ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
           {/* <input type="checkbox" name="" id="" /> */}
           <FileText size={16} />
           <p className="font-semibold">{fileName}</p>
         </div>
-        <div className="mr-4 flex items-center gap-2">
-          <button className="cursor-pointer rounded-lg border border-neutral-200 bg-white px-3 py-2 text-xs font-medium hover:bg-neutral-100">
-            Download all
-          </button>
-          <button
-            className="cursor-pointer"
-            onClick={() => setIsCollapsed(!isCollapsed)}
-          >
-            {isCollapsed ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-          </button>
+        <div className="mr-4">
+          <Button onClick={() => {}}>Download</Button>
         </div>
       </div>
 

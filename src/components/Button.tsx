@@ -9,7 +9,7 @@ export default function Button(props: Readonly<ButtonProps>) {
 
   return (
     <button
-      className="cursor-pointer rounded-lg border border-neutral-200 bg-neutral-900 px-3 py-2 text-xs font-medium text-white"
+      className="cursor-pointer rounded-lg border border-neutral-200 bg-white px-3 py-2 text-xs font-medium hover:bg-neutral-900 hover:text-neutral-100"
       onClick={onClick}
       disabled={disabled}
     >

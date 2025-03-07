@@ -14,7 +14,7 @@ export default function FileCategoryEntry(
   const { generateFile } = useFileGeneration();
 
   return (
-    <div className="ml-4 flex justify-between rounded-lg border border-neutral-200 bg-white px-4 py-2 hover:bg-neutral-100">
+    <div className="ml-8 flex justify-between rounded-lg border border-neutral-200 bg-white px-4 py-2 hover:bg-neutral-100">
       <div className="flex items-center gap-2">
         {/* <input type="checkbox" name="" id="" /> */}
         <FileText size={16} />

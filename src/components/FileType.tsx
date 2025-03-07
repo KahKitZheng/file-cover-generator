@@ -10,7 +10,7 @@ type FileTypeProps = {
 export default function FileType(props: Readonly<FileTypeProps>) {
   const { fileName, files } = props;
 
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   const filesByType = Object.groupBy(files, ({ type }) => type);
 

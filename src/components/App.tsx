@@ -1,25 +1,31 @@
-import FileType from "./FileType";
-import { WO_TEMPLATE } from "../course-type-templates/wo-template";
 import { useState } from "react";
+import Button from "./Button";
+import FileType from "./FileType";
+
+import { WO_TEMPLATE } from "../course-type-templates/wo-template";
+import { READING_TEMPLATE } from "../course-type-templates/reading-template";
+import { COURSE_TYPES } from "../constants/course-types";
 
 function App() {
   const [courseType, setCourseType] = useState("wo");
   const [fileStructure, setFileStructure] = useState(
-    getCourseTypeFileTemplate(),
+    getCourseTypeFileTemplate(courseType),
   );
 
-  function getCourseTypeTemplate() {
+  function getCourseTypeTemplate(courseType: string) {
     switch (courseType) {
       case "wo":
         return WO_TEMPLATE;
+      case "reading":
+        return READING_TEMPLATE;
       default:
         return WO_TEMPLATE;
     }
   }
 
-  function getCourseTypeFileTemplate() {
+  function getCourseTypeFileTemplate(courseType: string) {
     const fileStructure: Record<string, CourseTypeTemplate[]> =
-      getCourseTypeTemplate();
+      getCourseTypeTemplate(courseType);
 
     prepareFiles(fileStructure);
 
@@ -79,7 +85,8 @@ function App() {
     <div className="relative mx-auto flex h-full max-w-5xl flex-col gap-4 px-4 py-12">
       <header className="flex items-baseline justify-between">
         <h1 className="text-3xl font-bold">
-          File cover generator - <span className="text-red-400">dutch</span>
+          File cover generator -{" "}
+          <span className="text-red-400">{courseType}</span>
         </h1>
         <button className="cursor-pointer rounded bg-neutral-900 px-3 py-2 text-sm font-bold text-neutral-100">
           Download all files
@@ -90,11 +97,24 @@ function App() {
 
       <div className="relative grid h-full grid-cols-3 gap-4">
         <div className="sticky top-12 h-[75vh] rounded-lg border border-neutral-200">
-          <div className="flex h-full flex-col items-center justify-center">
+          <div className="flex h-full flex-col items-center justify-center gap-4 p-4">
             <span className="text-7xl">😯</span>
             <p className="mt-4 font-bold text-neutral-700 uppercase">
               table of contents
             </p>
+            <div className="flex flex-wrap items-center justify-center gap-1">
+              {COURSE_TYPES.map((courseType) => (
+                <Button
+                  key={courseType}
+                  onClick={() => {
+                    setCourseType(courseType);
+                    setFileStructure(getCourseTypeFileTemplate(courseType));
+                  }}
+                >
+                  {courseType}
+                </Button>
+              ))}
+            </div>
           </div>
         </div>
 

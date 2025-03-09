@@ -107,7 +107,7 @@ function App() {
                 </h2>
                 {fileStructure[fileSubGroup].map((file) => (
                   <FileType
-                    key={file.name}
+                    key={`${courseType}-${file.name}`}
                     fileName={file.name}
                     files={file.files}
                   />

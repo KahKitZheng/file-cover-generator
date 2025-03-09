@@ -1,4 +1,4 @@
-export const types = [
+export const COURSE_TYPES = [
   "mini",
   "junior",
   "default",

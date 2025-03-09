@@ -109,7 +109,15 @@ function App() {
           File cover generator -{" "}
           <span className="text-red-400">{courseType}</span>
         </h1>
-        <button className="cursor-pointer rounded bg-neutral-900 px-3 py-2 text-sm font-bold text-neutral-100">
+        <button
+          className="cursor-pointer rounded bg-neutral-900 px-3 py-2 text-sm font-bold text-neutral-100"
+          onClick={() =>
+            downloadCourseTypeAsZip(
+              fileStructure,
+              `${courseType}-files-complete`,
+            )
+          }
+        >
           Download all files
         </button>
       </header>

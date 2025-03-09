@@ -1,17 +1,17 @@
-import { FileText, ChevronUp, ChevronDown } from "lucide-react";
 import { useState } from "react";
+import { FileText, ChevronUp, ChevronDown } from "lucide-react";
 import FileCategory from "./FileCategory";
 import Button from "./Button";
-import JSZip from "jszip";
-import { generatePDFContent } from "../utils/generatePDFContent";
+import { downloadFileTypeAsZip } from "../utils/downloadFileTypeAsZip";
 
 type FileTypeProps = {
+  courseType: string;
   fileName: string;
   files: FileItem[];
 };
 
 export default function FileType(props: Readonly<FileTypeProps>) {
-  const { fileName, files } = props;
+  const { courseType, fileName, files } = props;
 
   const [isCollapsed, setIsCollapsed] = useState(true);
 
@@ -36,52 +36,6 @@ export default function FileType(props: Readonly<FileTypeProps>) {
     );
   }
 
-  const handleDocumentGenerate = async (type: string) => {
-    if (files.length === 0) {
-      return;
-    }
-
-    const zip = new JSZip();
-    const categoryFolder = zip.folder(type);
-
-    if (!categoryFolder) {
-      return;
-    }
-
-    // Group files by type
-    const filesByType = files.reduce(
-      (acc, file) => {
-        if (!acc[file.type]) {
-          acc[file.type] = [];
-        }
-        acc[file.type].push(file);
-        return acc;
-      },
-      {} as Record<FileType, FileItem[]>,
-    );
-
-    // Add files to zip maintaining folder structure
-    for (const [type, typeFiles] of Object.entries(filesByType)) {
-      const typeFolder = categoryFolder.folder(type);
-      if (!typeFolder) continue;
-
-      for (const file of typeFiles) {
-        const content = generatePDFContent(file);
-        typeFolder.file(`${file.name}.${file.fileFormat}`, content);
-      }
-    }
-
-    const content = await zip.generateAsync({ type: "blob" });
-    const url = URL.createObjectURL(content);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${type}-files.zip`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
   return (
     <div className="grid gap-2 rounded-lg border border-neutral-200 px-4 py-2">
       <div className="flex justify-between">
@@ -95,7 +49,9 @@ export default function FileType(props: Readonly<FileTypeProps>) {
           <p className="font-semibold">{fileName}</p>
         </div>
         <div className="mr-4">
-          <Button onClick={() => handleDocumentGenerate(fileName)}>
+          <Button
+            onClick={() => downloadFileTypeAsZip(courseType, fileName, files)}
+          >
             Download
           </Button>
         </div>

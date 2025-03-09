@@ -119,22 +119,20 @@ function App() {
         </div>
 
         <div className="col-span-2 grid auto-rows-max gap-2">
-          {Object.keys(fileStructure).map((fileSubGroup) => {
-            return fileStructure[fileSubGroup].length > 0 ? (
-              <div key={fileSubGroup} className="mb-8 grid gap-2">
-                <h2 className="border-l-4 border-l-red-400 pl-3 text-xl font-bold">
-                  {fileSubGroup}
-                </h2>
-                {fileStructure[fileSubGroup].map((file) => (
-                  <FileType
-                    key={`${courseType}-${file.name}`}
-                    fileName={file.name}
-                    files={file.files}
-                  />
-                ))}
-              </div>
-            ) : null;
-          })}
+          {Object.keys(fileStructure).map((fileSubGroup) => (
+            <div key={fileSubGroup} className="mb-8 grid gap-2">
+              <h2 className="border-l-4 border-l-red-400 pl-3 text-xl font-bold">
+                {fileSubGroup}
+              </h2>
+              {fileStructure[fileSubGroup].map((file) => (
+                <FileType
+                  key={`${courseType}-${file.name}`}
+                  fileName={file.name}
+                  files={file.files}
+                />
+              ))}
+            </div>
+          ))}
         </div>
       </div>
     </div>

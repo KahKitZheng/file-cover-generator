@@ -12,27 +12,22 @@ const TEACHER_MATERIALS: CourseTypeTemplate[] = [
     category: { course: true, chapter: false, tile: false },
     files: [],
   },
+  {
+    name: FILE_NAME.ALGEMENE_HANDLEIDING,
+    category: { course: true, chapter: false, tile: false },
+    files: [],
+  },
 ];
 
 const TEACHING_MATERIALS: CourseTypeTemplate[] = [
   {
-    name: FILE_NAME.TEKST_A,
-    category: { course: true, chapter: false, tile: false },
+    name: FILE_NAME.LEERWERKSCHRIFT,
+    category: { course: true, chapter: false, tile: true },
     files: [],
   },
   {
-    name: FILE_NAME.TEKST_B,
-    category: { course: true, chapter: false, tile: false },
-    files: [],
-  },
-  {
-    name: FILE_NAME.WERKBLADEN,
-    category: { course: true, chapter: false, tile: false },
-    files: [],
-  },
-  {
-    name: FILE_NAME.ANTWOORDEN_WERKBLADEN,
-    category: { course: true, chapter: false, tile: false },
+    name: FILE_NAME.ANTWOORDEN_LEERWERKSCHRIFT,
+    category: { course: true, chapter: false, tile: true },
     files: [],
   },
 ];
@@ -50,8 +45,22 @@ const EXTRA_TEACHING_MATERIALS: CourseTypeTemplate[] = [
   },
 ];
 
-export const READING_TEMPLATE = {
+const DIFFERENTIATION_MATERIALS: CourseTypeTemplate[] = [
+  {
+    name: FILE_NAME.WERKBLADEN_EXTRA_BEGELEIDING,
+    category: { course: true, chapter: false, tile: true },
+    files: [],
+  },
+  {
+    name: FILE_NAME.WERKBLADEN_EXTRA_UITDAGING,
+    category: { course: true, chapter: false, tile: true },
+    files: [],
+  },
+];
+
+export const DUTCH_TEMPLATE = {
   [FILE_SUBGROUP.LEERKRACHTENMATERIAAL]: TEACHER_MATERIALS,
   [FILE_SUBGROUP.LESMATERIAAL]: TEACHING_MATERIALS,
   [FILE_SUBGROUP.EXTRA_LESMATERIAAL]: EXTRA_TEACHING_MATERIALS,
+  [FILE_SUBGROUP.DIFFERENTIATIEMATERIAAL]: DIFFERENTIATION_MATERIALS,
 };

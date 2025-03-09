@@ -4,7 +4,7 @@ import { FILE_SUBGROUP } from "../constants/file-subgroup";
 const TEACHER_MATERIALS: CourseTypeTemplate[] = [
   {
     name: FILE_NAME.THEMAVOORBEREIDING,
-    category: { course: true, chapter: true, tile: true },
+    category: { course: true, chapter: true, tile: false },
     files: [],
   },
   {
@@ -22,7 +22,7 @@ const EXTRA_TEACHING_MATERIALS: CourseTypeTemplate[] = [
   },
 ];
 
-export const MINI_TEMPLATE = {
+export const PROJECT_1_2_TEMPLATE = {
   [FILE_SUBGROUP.LEERKRACHTENMATERIAAL]: TEACHER_MATERIALS,
   [FILE_SUBGROUP.EXTRA_LESMATERIAAL]: EXTRA_TEACHING_MATERIALS,
 };

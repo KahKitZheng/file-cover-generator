@@ -2,9 +2,16 @@ import { useState } from "react";
 import Button from "./Button";
 import FileType from "./FileType";
 
-import { WO_TEMPLATE } from "../course-type-templates/wo-template";
-import { READING_TEMPLATE } from "../course-type-templates/reading-template";
 import { COURSE_TYPES } from "../constants/course-types";
+import { MINI_TEMPLATE } from "../course-type-templates/mini-template";
+import { JUNIOR_TEMPLATE } from "../course-type-templates/junior-template";
+import { WO_TEMPLATE } from "../course-type-templates/wo-template";
+import { READING_5_8_TEMPLATE } from "../course-type-templates/reading_5_8-template";
+import { PROJECT_1_2_TEMPLATE } from "../course-type-templates/project_1_2-template";
+import { PROJECT_3_4_TEMPLATE } from "../course-type-templates/project_3_4-template";
+import { PROJECT_5_6_TEMPLATE } from "../course-type-templates/project_5_6-template";
+import { PROJECT_7_8_TEMPLATE } from "../course-type-templates/project_7_8-template";
+import { DUTCH_TEMPLATE } from "../course-type-templates/dutch-template";
 
 function App() {
   const [courseType, setCourseType] = useState("wo");
@@ -14,12 +21,26 @@ function App() {
 
   function getCourseTypeTemplate(courseType: string) {
     switch (courseType) {
-      case "wo":
+      case "Mini":
+        return MINI_TEMPLATE;
+      case "Junior":
+        return JUNIOR_TEMPLATE;
+      case "WO":
         return WO_TEMPLATE;
-      case "reading":
-        return READING_TEMPLATE;
+      case "Reading 5-8":
+        return READING_5_8_TEMPLATE;
+      case "Project 1-2":
+        return PROJECT_1_2_TEMPLATE;
+      case "Project 3-4":
+        return PROJECT_3_4_TEMPLATE;
+      case "Project 5-6":
+        return PROJECT_5_6_TEMPLATE;
+      case "Project 7-8":
+        return PROJECT_7_8_TEMPLATE;
+      case "Dutch":
+        return DUTCH_TEMPLATE;
       default:
-        return WO_TEMPLATE;
+        return {};
     }
   }
 

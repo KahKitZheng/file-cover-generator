@@ -1,106 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { COURSE_TYPES } from "../constants/course-types";
+import { downloadCourseTypeAsZip } from "../utils/downloadCourseType";
 import Button from "./Button";
 import FileType from "./FileType";
-
-import { COURSE_TYPES } from "../constants/course-types";
-import { MINI_TEMPLATE } from "../course-type-templates/mini-template";
-import { JUNIOR_TEMPLATE } from "../course-type-templates/junior-template";
-import { WO_TEMPLATE } from "../course-type-templates/wo-template";
-import { READING_5_8_TEMPLATE } from "../course-type-templates/reading_5_8-template";
-import { PROJECT_1_2_TEMPLATE } from "../course-type-templates/project_1_2-template";
-import { PROJECT_3_4_TEMPLATE } from "../course-type-templates/project_3_4-template";
-import { PROJECT_5_6_TEMPLATE } from "../course-type-templates/project_5_6-template";
-import { PROJECT_7_8_TEMPLATE } from "../course-type-templates/project_7_8-template";
-import { DUTCH_TEMPLATE } from "../course-type-templates/dutch-template";
+import useCourseTypeFiles from "../hooks/useCourseTypeFiles";
 
 function App() {
-  const [courseType, setCourseType] = useState("wo");
-  const [fileStructure, setFileStructure] = useState(
-    getCourseTypeFileTemplate(courseType),
-  );
+  const [courseType, setCourseType] = useState("WO");
+  const [fileStructure, setFileStructure] = useState<FileStructure>({});
 
-  function getCourseTypeTemplate(courseType: string) {
-    switch (courseType) {
-      case "Mini":
-        return MINI_TEMPLATE;
-      case "Junior":
-        return JUNIOR_TEMPLATE;
-      case "WO":
-        return WO_TEMPLATE;
-      case "Reading 5-8":
-        return READING_5_8_TEMPLATE;
-      case "Project 1-2":
-        return PROJECT_1_2_TEMPLATE;
-      case "Project 3-4":
-        return PROJECT_3_4_TEMPLATE;
-      case "Project 5-6":
-        return PROJECT_5_6_TEMPLATE;
-      case "Project 7-8":
-        return PROJECT_7_8_TEMPLATE;
-      case "Dutch":
-        return DUTCH_TEMPLATE;
-      default:
-        return {};
-    }
-  }
+  const { getCourseTypeFileTemplate } = useCourseTypeFiles();
 
-  function getCourseTypeFileTemplate(courseType: string) {
-    const fileStructure: Record<string, CourseTypeTemplate[]> =
-      getCourseTypeTemplate(courseType);
-
-    prepareFiles(fileStructure);
-
-    return fileStructure;
-  }
-
-  function prepareFiles(fileStructure: Record<string, CourseTypeTemplate[]>) {
-    return Object.values(fileStructure).forEach((fileSubGroup) => {
-      fileSubGroup.forEach((file) => {
-        if (file.category.course === true) {
-          const courseWideFile: FileItem = {
-            id: `${fileSubGroup}-course-wide-${file.name}`,
-            name: "Course-wide",
-            type: "course-wide",
-            fileFormat: "pdf",
-          };
-
-          if (!file.files.some((f) => f.id === courseWideFile.id)) {
-            file.files.push(courseWideFile);
-          }
-        }
-
-        if (file.category.chapter === true) {
-          for (let i = 1; i <= 4; i++) {
-            const chapterFile: FileItem = {
-              id: `${fileSubGroup}-chapter-${i}-${file.name}`,
-              name: `Chapter ${i}`,
-              type: "chapter",
-              fileFormat: "pdf",
-            };
-
-            if (!file.files.some((f) => f.id === chapterFile.id)) {
-              file.files.push(chapterFile);
-            }
-          }
-        }
-
-        if (file.category.tile === true) {
-          for (let i = 1; i <= 12; i++) {
-            const tileFile: FileItem = {
-              id: `${fileSubGroup}-tile-${i}-${file.name}`,
-              name: `Tile ${i}`,
-              type: "tile",
-              fileFormat: "pdf",
-            };
-
-            if (!file.files.some((f) => f.id === tileFile.id)) {
-              file.files.push(tileFile);
-            }
-          }
-        }
-      });
-    });
-  }
+  useEffect(() => {
+    setFileStructure(getCourseTypeFileTemplate(courseType));
+  }, [courseType, getCourseTypeFileTemplate]);
 
   return (
     <div className="relative mx-auto flex h-full max-w-5xl flex-col gap-4 px-4 py-12">

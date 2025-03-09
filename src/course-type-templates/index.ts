@@ -1,0 +1,9 @@
+export { default as MINI } from "./mini-template";
+export { default as JUNIOR } from "./junior-template";
+export { default as WO } from "./wo-template";
+export { default as READING_5_8 } from "./reading_5_8-template";
+export { default as PROJECT_1_2 } from "./project_1_2-template";
+export { default as PROJECT_3_4 } from "./project_3_4-template";
+export { default as PROJECT_5_6 } from "./project_5_6-template";
+export { default as PROJECT_7_8 } from "./project_7_8-template";
+export { default as DUTCH } from "./dutch-template";

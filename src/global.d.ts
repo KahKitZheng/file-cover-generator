@@ -1,3 +1,5 @@
+type FileStructure = Record<string, CourseTypeTemplate[]>;
+
 type CourseTypeTemplate = {
   name: string;
   category: {

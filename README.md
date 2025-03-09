@@ -29,6 +29,8 @@ Generates files for each course type to make testing the file system easier. Thi
   - [x] Project 7/8
   - [x] Dutch
 
+- [ ] Change how chapters and tiles should be generated
+
 ## Should haves
 
 - [ ] Rework UI to simulate folder structure

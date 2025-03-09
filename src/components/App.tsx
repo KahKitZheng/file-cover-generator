@@ -16,50 +16,43 @@ function App() {
   }, [courseType, getCourseTypeFileTemplate]);
 
   return (
-    <div className="relative mx-auto flex h-full max-w-5xl flex-col gap-4 px-4 py-12">
-      <header className="flex items-baseline justify-between">
-        <h1 className="text-3xl font-bold">
-          File cover generator -{" "}
-          <span className="text-red-400">{courseType}</span>
-        </h1>
-        <button
-          className="cursor-pointer rounded bg-neutral-900 px-3 py-2 text-sm font-bold text-neutral-100"
-          onClick={() =>
-            downloadCourseTypeAsZip(
-              fileStructure,
-              `${courseType}-files-complete`,
-            )
-          }
-        >
-          Download all files
-        </button>
+    <div className="relative mx-auto flex h-full max-w-3xl flex-col gap-4 px-4 py-12">
+      <header className="flex flex-col gap-4">
+        <div className="flex items-baseline justify-between">
+          <h1 className="text-3xl font-bold">
+            File cover generator -{" "}
+            <span className="text-red-400">{courseType}</span>
+          </h1>
+          <button
+            className="cursor-pointer rounded bg-neutral-900 px-3 py-2 text-sm font-bold text-neutral-100"
+            onClick={() =>
+              downloadCourseTypeAsZip(
+                fileStructure,
+                `${courseType}-files-complete`,
+              )
+            }
+          >
+            Download all files
+          </button>
+        </div>
+        <div className="flex flex-wrap items-center gap-1">
+          {COURSE_TYPES.map((courseType) => (
+            <Button
+              key={courseType}
+              onClick={() => {
+                setCourseType(courseType);
+                setFileStructure(getCourseTypeFileTemplate(courseType));
+              }}
+            >
+              {courseType}
+            </Button>
+          ))}
+        </div>
       </header>
 
       <hr className="border border-neutral-100" />
 
-      <div className="relative grid h-full grid-cols-3 gap-4">
-        <div className="sticky top-12 h-[75vh] rounded-lg border border-neutral-200">
-          <div className="flex h-full flex-col items-center justify-center gap-4 p-4">
-            <span className="text-7xl">😯</span>
-            <p className="mt-4 font-bold text-neutral-700 uppercase">
-              table of contents
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-1">
-              {COURSE_TYPES.map((courseType) => (
-                <Button
-                  key={courseType}
-                  onClick={() => {
-                    setCourseType(courseType);
-                    setFileStructure(getCourseTypeFileTemplate(courseType));
-                  }}
-                >
-                  {courseType}
-                </Button>
-              ))}
-            </div>
-          </div>
-        </div>
-
+      <div className="relative grid h-full gap-4">
         <div className="col-span-2 grid auto-rows-max gap-2">
           {Object.keys(fileStructure).map((fileSubGroup) => (
             <div key={fileSubGroup} className="mb-8 grid gap-2">

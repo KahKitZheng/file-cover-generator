@@ -35,12 +35,13 @@ Generates files for each course type to make testing the file system easier. Thi
 
 - [ ] Rework UI to simulate folder structure
 - [ ] Retrieve course type from URL
+- [ ] Make file covers less boring
 - [ ] File preview
-- [ ] Prettier file covers
-- [ ] Course, chapter, tile covers???
 - [ ] Vitest
 - [ ] Command K
+- [ ] Download only selected files
 
 ## Could haves
 
+- [ ] Course, chapter, tile covers???
 - [ ] Exception files

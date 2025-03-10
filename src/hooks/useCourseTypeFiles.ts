@@ -2,24 +2,24 @@ import * as COURSE_TYPE_TEMPLATES from "../course-type-templates";
 
 export default function useCourseTypeFiles() {
   function getCourseTypeTemplate(courseType: string) {
-    switch (courseType) {
-      case "Mini":
+    switch (courseType.toLowerCase()) {
+      case "mini":
         return COURSE_TYPE_TEMPLATES.MINI;
-      case "Junior":
+      case "junior":
         return COURSE_TYPE_TEMPLATES.JUNIOR;
-      case "WO":
+      case "wo":
         return COURSE_TYPE_TEMPLATES.WO;
-      case "Reading 5-8":
+      case "reading 5-8":
         return COURSE_TYPE_TEMPLATES.READING_5_8;
-      case "Project 1-2":
+      case "project 1-2":
         return COURSE_TYPE_TEMPLATES.PROJECT_1_2;
-      case "Project 3-4":
+      case "project 3-4":
         return COURSE_TYPE_TEMPLATES.PROJECT_3_4;
-      case "Project 5-6":
+      case "project 5-6":
         return COURSE_TYPE_TEMPLATES.PROJECT_5_6;
-      case "Project 7-8":
+      case "project 7-8":
         return COURSE_TYPE_TEMPLATES.PROJECT_7_8;
-      case "Dutch":
+      case "dutch":
         return COURSE_TYPE_TEMPLATES.DUTCH;
       default:
         return {};

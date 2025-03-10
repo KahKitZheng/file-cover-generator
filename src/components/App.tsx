@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router";
 import { COURSE_TYPES } from "../constants/course-types";
 import { downloadCourseTypeAsZip } from "../utils/downloadCourseType";
 import Button from "./Button";
@@ -6,14 +7,16 @@ import FileType from "./FileType";
 import useCourseTypeFiles from "../hooks/useCourseTypeFiles";
 
 function App() {
-  const [courseType, setCourseType] = useState("WO");
-  const [fileStructure, setFileStructure] = useState<FileStructure>({});
+  const params = useParams();
+  const navigate = useNavigate();
+  const courseTypeParam = params?.courseType?.replace("-", " ");
 
   const { getCourseTypeFileTemplate } = useCourseTypeFiles();
 
-  useEffect(() => {
-    setFileStructure(getCourseTypeFileTemplate(courseType));
-  }, [courseType, getCourseTypeFileTemplate]);
+  const [courseType, setCourseType] = useState(courseTypeParam ?? "wo");
+  const [fileStructure, setFileStructure] = useState<FileStructure>(
+    getCourseTypeFileTemplate(courseType),
+  );
 
   return (
     <div className="relative mx-auto flex h-full max-w-3xl flex-col gap-4 px-4 py-12">
@@ -21,7 +24,9 @@ function App() {
         <div className="flex items-baseline justify-between">
           <h1 className="text-3xl font-bold">
             File cover generator -{" "}
-            <span className="text-red-400">{courseType}</span>
+            <span className="text-red-400">
+              {courseType.charAt(0).toUpperCase() + courseType.slice(1)}
+            </span>
           </h1>
           <button
             className="cursor-pointer rounded bg-neutral-900 px-3 py-2 text-sm font-bold text-neutral-100"
@@ -42,6 +47,7 @@ function App() {
               onClick={() => {
                 setCourseType(courseType);
                 setFileStructure(getCourseTypeFileTemplate(courseType));
+                navigate(`/${courseType.replace(" ", "-").toLowerCase()}`);
               }}
             >
               {courseType}

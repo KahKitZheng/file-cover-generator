@@ -9,10 +9,8 @@ export function useFileGeneration() {
   const generateFile = async (file: FileItem, download: boolean) => {
     const updatedFile = { ...file };
 
-    // Download the generated file
-    const content = new Blob([generatePDFContent(updatedFile)], {
-      type: "application/pdf",
-    });
+    // Generate and download the file
+    const content = await generatePDFContent(updatedFile);
 
     if (download) {
       downloadFile(content, `${file.name}.${file.fileFormat}`);
@@ -26,14 +24,12 @@ export function useFileGeneration() {
    */
   const generateFiles = async (filesToGenerate: FileItem[]) => {
     const totalFiles = filesToGenerate.length;
-
     const generatedFiles: FileItem[] = [];
 
     // Generate all files
     for (let i = 0; i < totalFiles; i++) {
       const file = filesToGenerate[i];
       const generatedFile = await generateFile(file, false);
-
       generatedFiles.push(generatedFile);
     }
 

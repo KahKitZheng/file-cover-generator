@@ -32,8 +32,9 @@ export default function useCourseTypeFiles() {
         if (file.category.course === true) {
           const courseWideFile: FileItem = {
             id: `${fileSubGroup}-course-wide-${file.name}`,
-            name: "Course-wide",
+            name: file.name,
             type: "course-wide",
+            order: undefined,
             fileFormat: "pdf",
           };
 
@@ -46,8 +47,9 @@ export default function useCourseTypeFiles() {
           for (let i = 1; i <= 4; i++) {
             const chapterFile: FileItem = {
               id: `${fileSubGroup}-chapter-${i}-${file.name}`,
-              name: `Chapter ${i}`,
+              name: file.name,
               type: "chapter",
+              order: i,
               fileFormat: "pdf",
             };
 
@@ -61,8 +63,9 @@ export default function useCourseTypeFiles() {
           for (let i = 1; i <= 12; i++) {
             const tileFile: FileItem = {
               id: `${fileSubGroup}-tile-${i}-${file.name}`,
-              name: `Tile ${i}`,
+              name: file.name,
               type: "tile",
+              order: i,
               fileFormat: "pdf",
             };
 

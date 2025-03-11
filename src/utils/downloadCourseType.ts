@@ -10,20 +10,27 @@ export const downloadCourseTypeAsZip = async (
 
   if (!courseFolder) return;
 
-  Object.entries(fileStructure).forEach(([subgroupName, fileSubgroup]) => {
+  for (const [subgroupName, fileSubgroup] of Object.entries(fileStructure)) {
     const subgroupFolder = courseFolder.folder(subgroupName);
-    if (!subgroupFolder) return;
+    if (!subgroupFolder) continue;
 
-    fileSubgroup.forEach((fileType) => {
+    for (const fileType of fileSubgroup) {
       const fileTypeFolder = subgroupFolder.folder(fileType.name);
-      if (!fileTypeFolder) return;
+      if (!fileTypeFolder) continue;
 
-      fileType.files.forEach((file) => {
-        const content = generatePDFContent(file);
-        fileTypeFolder.file(`${file.name}.${file.fileFormat}`, content);
-      });
-    });
-  });
+      for (const file of fileType.files) {
+        const type = file.type as FileType;
+        const typeFolder = fileTypeFolder.folder(type);
+        if (!typeFolder) continue;
+
+        const content = await generatePDFContent(file);
+        typeFolder.file(
+          `${file.type}${file.order ? ` ${file.order}` : ""}.${file.fileFormat}`,
+          content,
+        );
+      }
+    }
+  }
 
   const zipBlob = await zip.generateAsync({ type: "blob" });
   const url = URL.createObjectURL(zipBlob);

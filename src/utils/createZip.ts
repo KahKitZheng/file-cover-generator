@@ -14,7 +14,7 @@ export async function createZipWithFiles(
   const zip = new JSZip();
 
   for (const file of files) {
-    const content = generatePDFContent(file);
+    const content = await generatePDFContent(file);
     let folder = zip;
 
     if (options.categoryFolder) {

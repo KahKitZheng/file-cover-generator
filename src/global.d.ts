@@ -22,4 +22,5 @@ type FileItem = {
   name: string;
   type: FileType;
   fileFormat: FileFormat;
+  order?: number;
 };

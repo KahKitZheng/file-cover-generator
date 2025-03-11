@@ -11,14 +11,17 @@ export const downloadFileTypeAsZip = async (
   }
 
   const zip = new JSZip();
+  const courseFolder = zip.folder(courseType);
+  if (!courseFolder) return;
 
   // Group files by type
   const filesByType = files.reduce(
     (acc, file) => {
-      if (!acc[file.type]) {
-        acc[file.type] = [];
+      const type = file.type as FileType;
+      if (!acc[type]) {
+        acc[type] = [];
       }
-      acc[file.type].push(file);
+      acc[type].push(file);
       return acc;
     },
     {} as Record<FileType, FileItem[]>,
@@ -26,12 +29,15 @@ export const downloadFileTypeAsZip = async (
 
   // Add files to zip maintaining folder structure
   for (const [type, typeFiles] of Object.entries(filesByType)) {
-    const typeFolder = zip.folder(type);
+    const typeFolder = courseFolder.folder(fileType)?.folder(type);
     if (!typeFolder) continue;
 
     for (const file of typeFiles) {
-      const content = generatePDFContent(file);
-      typeFolder.file(`${file.name}.${file.fileFormat}`, content);
+      const content = await generatePDFContent(file);
+      typeFolder.file(
+        `${file.type}${file.order ? ` ${file.order}` : ""}.${file.fileFormat}`,
+        content,
+      );
     }
   }
 

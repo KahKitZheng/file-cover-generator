@@ -1,19 +1,65 @@
 import { Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import BlueBlob from "./page-background/BlueBlob";
+import GreenBlob from "./page-background/GreenBlob";
+import PinkBlob from "./page-background/PinkBlob";
+import YellowBlob from "./page-background/YellowBlob";
 
-const styles = StyleSheet.create({
+const pageStyles = StyleSheet.create({
   page: {
-    flexDirection: "column",
     backgroundColor: "#ffffff",
-    padding: 30,
+    padding: 60,
+    height: "100%",
+    width: "100%",
+    position: "relative",
   },
-  header: {
-    fontSize: 24,
-    marginBottom: 20,
-    fontWeight: "bold",
+});
+
+const pageBackgroundStyles = StyleSheet.create({
+  background: {
+    height: "100%",
+    width: "100%",
+    position: "relative",
+    zIndex: 1,
   },
-  section: {
+});
+
+const contentStyles = StyleSheet.create({
+  content: {
+    display: "flex",
+    justifyContent: "center",
+    flexDirection: "column",
+    height: "100%",
+    width: "100%",
+    position: "absolute",
+    zIndex: 5,
+  },
+  courseType: {
     fontSize: 12,
-    marginBottom: 10,
+    marginBottom: 4,
+    opacity: 0.5,
+  },
+  fileNameContainer: {
+    width: "100%",
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  fileName: {
+    fontSize: 48,
+    fontWeight: "bold",
+    lineHeight: 1,
+  },
+  underTitle: {
+    fontSize: 20,
+    marginTop: 32,
+    color: "#ff6467",
+  },
+  date: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    fontSize: 10,
+    opacity: 0.5,
+    zIndex: 10,
   },
 });
 
@@ -21,26 +67,29 @@ interface PDFTemplateProps {
   file: FileItem;
 }
 
-function getDisplayName(file: FileItem): string {
-  switch (file.type) {
-    case "course-wide":
-      return `${file.name} - Course Wide`;
-    case "chapter":
-      return `${file.name} - Chapter ${file.order}`;
-    case "tile":
-      return `${file.name} - Tile ${file.order}`;
-    default:
-      return file.name;
-  }
-}
-
 export const PDFTemplate: React.FC<PDFTemplateProps> = ({ file }) => (
-  <Page size="A4" style={styles.page}>
-    <View>
-      <Text style={styles.header}>{getDisplayName(file)}</Text>
-      <Text style={styles.section}>Type: {file.type}</Text>
-      <Text style={styles.section}>
-        Created at: {new Date().toLocaleString()}
+  <Page size="A4" style={pageStyles.page}>
+    <View style={pageBackgroundStyles.background}>
+      <BlueBlob />
+      <YellowBlob />
+      <GreenBlob />
+      <PinkBlob />
+    </View>
+    <View style={contentStyles.content}>
+      <Text style={contentStyles.courseType}>COURSE_TYPE</Text>
+      <View style={contentStyles.fileNameContainer}>
+        {file.name.split(" ").map((word, index) => (
+          <Text key={index} style={contentStyles.fileName}>
+            {word}{" "}
+          </Text>
+        ))}
+      </View>
+      <Text style={contentStyles.underTitle}>
+        {file.type.charAt(0).toUpperCase() + file.type.slice(1)}
+        {file.order ? ` ${file.order}` : ""}
+      </Text>
+      <Text style={contentStyles.date}>
+        Created at: {new Date().toLocaleDateString().replace(/\//g, "-")}
       </Text>
     </View>
   </Page>

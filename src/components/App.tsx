@@ -1,195 +1,83 @@
 import { useState } from "react";
-import { TEMPLATE_DEFAULT } from "../templates/default";
+import { useNavigate, useParams } from "react-router";
+import { COURSE_TYPES } from "../constants/course-types";
+import { downloadCourseTypeAsZip } from "../utils/downloadCourseType";
+import Button from "./Button";
+import FileType from "./FileType";
+import useCourseTypeFiles from "../hooks/useCourseTypeFiles";
 
 function App() {
-  const [selectedType, setSelectedType] = useState("default");
+  const params = useParams();
+  const navigate = useNavigate();
+  const courseTypeParam = params?.courseType?.replace("-", " ");
 
-  const [chapterAmount, setChapterAmount] = useState(4);
-  const [tilesAmount, setTilesAmount] = useState(5);
+  const { getCourseTypeFileTemplate } = useCourseTypeFiles();
 
-  const filesByType = getTemplateByType(selectedType);
-
-  function getTemplateByType(type: string) {
-    switch (type) {
-      case "default":
-        return TEMPLATE_DEFAULT;
-      default:
-        return {};
-    }
-  }
+  const [courseType, setCourseType] = useState(courseTypeParam ?? "wo");
+  const [fileStructure, setFileStructure] = useState<FileStructure>(
+    getCourseTypeFileTemplate(courseType),
+  );
 
   return (
-    <main className="max-w-7xl mx-auto py-12 grid gap-8 relative">
-      <h1 className="text-3xl font-bold">
-        File cover generator - type{" "}
-        <i className="text-blue-400">{selectedType}</i>
-      </h1>
-
-      <div className="grid gap-2 w-fit">
-        <div className="grid grid-cols-2 gap-12">
-          <label>Nr. of chapter</label>
-          <input
-            type="number"
-            min={1}
-            value={chapterAmount}
-            onChange={(e) => setChapterAmount(Number(e.target.value))}
-            className="border w-12 text-right h-6 text-sm px-2 rounded"
-          />
+    <div className="relative mx-auto flex h-full max-w-3xl flex-col gap-4 px-4 py-12">
+      <header className="flex flex-col gap-4">
+        <div className="flex items-baseline justify-between">
+          <h1 className="text-3xl font-bold">
+            File cover generator -{" "}
+            <span className="text-red-400">
+              {courseType.charAt(0).toUpperCase() + courseType.slice(1)}
+            </span>
+          </h1>
+          <button
+            className="cursor-pointer rounded bg-neutral-900 px-3 py-2 text-sm font-bold text-neutral-100"
+            onClick={() =>
+              downloadCourseTypeAsZip(
+                fileStructure,
+                `${courseType}-files-complete`,
+              )
+            }
+          >
+            Download all files
+          </button>
         </div>
-        <div className="grid grid-cols-2 gap-12">
-          <label>Nr. of tiles per chapter</label>
-          <input
-            type="number"
-            min={1}
-            value={tilesAmount}
-            onChange={(e) => setTilesAmount(Number(e.target.value))}
-            className="border w-12 text-right h-6 text-sm px-2 rounded"
-          />
-        </div>
-      </div>
-
-      <div className="grid gap-y-8 gap-12 grid-cols-5 -mx-2">
-        <div className="grid gap-y-2 col-span-3">
-          {Object.keys(filesByType).map((fileSubgroup, index) => (
-            <section key={index}>
-              <header className="border-b-2 py-1 my-2 border-neutral-200">
-                <h2 className="font-bold text-lg px-2">{fileSubgroup}</h2>
-              </header>
-              <div className="grid gap-1 px-2">
-                {filesByType[fileSubgroup].map((fileName) => (
-                  <div
-                    key={fileName}
-                    // className="flex justify-between gap-4 items-center"
-                    className="grid grid-cols-[200px_1fr] gap-4 items-baseline"
-                  >
-                    <p className="inline w-fit text-sm">{fileName}</p>
-                    <div className="flex justify-end gap-6 items-baseline">
-                      <div className="flex gap-2">
-                        <input
-                          type="checkbox"
-                          // checked
-                          className="accent-blue-300 h-3 w-3"
-                        />
-                      </div>
-                      <div className="flex gap-1 flex-wrap">
-                        {Array.from({ length: chapterAmount }).map(
-                          (_, index) => (
-                            <input
-                              key={`chapter-${index}`}
-                              type="checkbox"
-                              // checked
-                              className="accent-green-300 h-3 w-3"
-                            />
-                          )
-                        )}
-                      </div>
-                      <div className="flex gap-x-4 gap-y-1 flex-wrap">
-                        {Array.from({ length: chapterAmount }).map(
-                          (_, index) => (
-                            <div
-                              key={`tiles-chapter-${index}`}
-                              className="flex gap-1 overflow-auto"
-                            >
-                              {Array.from({ length: tilesAmount }).map(
-                                (_, index) => (
-                                  <input
-                                    key={`tile-${index}`}
-                                    type="checkbox"
-                                    // checked
-                                    className="accent-red-300 h-3 w-3 indeterminate:bg-neutral-900"
-                                  />
-                                )
-                              )}
-                            </div>
-                          )
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-          ))}
-          {Object.keys(filesByType).map((fileSubgroup, index) => (
-            <section key={index}>
-              <header className="border-b-2 py-1 my-2 border-neutral-200">
-                <h2 className="font-bold text-lg px-2">{fileSubgroup}</h2>
-              </header>
-              <div className="grid gap-1 px-2">
-                {filesByType[fileSubgroup].map((fileName) => (
-                  <div
-                    key={fileName}
-                    // className="flex justify-between gap-4 items-center"
-                    className="grid grid-cols-[200px_1fr] gap-4 items-baseline"
-                  >
-                    <p className="inline w-fit text-sm">{fileName}</p>
-                    <div className="flex justify-end gap-6 items-baseline">
-                      <div className="flex gap-2">
-                        <input
-                          type="checkbox"
-                          // checked
-                          className="accent-blue-300 h-3 w-3"
-                        />
-                      </div>
-                      <div className="flex gap-1 flex-wrap">
-                        {Array.from({ length: chapterAmount }).map(
-                          (_, index) => (
-                            <input
-                              key={`chapter-${index}`}
-                              type="checkbox"
-                              // checked
-                              className="accent-green-300 h-3 w-3"
-                            />
-                          )
-                        )}
-                      </div>
-                      <div className="flex gap-x-4 gap-y-1 flex-wrap">
-                        {Array.from({ length: chapterAmount }).map(
-                          (_, index) => (
-                            <div
-                              key={`tiles-chapter-${index}`}
-                              className="flex gap-1 overflow-auto"
-                            >
-                              {Array.from({ length: tilesAmount }).map(
-                                (_, index) => (
-                                  <input
-                                    key={`tile-${index}`}
-                                    type="checkbox"
-                                    // checked
-                                    className="accent-red-300 h-3 w-3 indeterminate:bg-neutral-900"
-                                  />
-                                )
-                              )}
-                            </div>
-                          )
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
+        <div className="flex flex-wrap items-center gap-1">
+          {COURSE_TYPES.map((courseType) => (
+            <Button
+              key={courseType}
+              onClick={() => {
+                setCourseType(courseType);
+                setFileStructure(getCourseTypeFileTemplate(courseType));
+                navigate(`/${courseType.replace(" ", "-").toLowerCase()}`);
+              }}
+            >
+              {courseType}
+            </Button>
           ))}
         </div>
-        <div className="sticky top-32 right-4 h-[80vh] col-span-2 pt-12">
-          <div className="border border-neutral-200 p-8 rounded h-full aspect-[1/1.414] mx-auto flex items-start flex-col justify-center shadow-lg">
-            <div>
-              <small className="uppercase text-xs">Course-wide</small>
-              <p className="text-3xl font-black w-fit mb-2">
-                Example file name
-              </p>
-              <p className="text-sm">Van boer tot piloot (ID: 1)</p>
+      </header>
+
+      <hr className="border border-neutral-100" />
+
+      <div className="relative grid h-full gap-4">
+        <div className="col-span-2 grid auto-rows-max gap-2">
+          {Object.keys(fileStructure).map((fileSubGroup) => (
+            <div key={fileSubGroup} className="mb-8 grid gap-2">
+              <h2 className="border-l-4 border-l-red-400 pl-3 text-xl font-bold">
+                {fileSubGroup}
+              </h2>
+              {fileStructure[fileSubGroup].map((file) => (
+                <FileType
+                  key={`${courseType}-${file.name}`}
+                  courseType={courseType}
+                  fileName={file.name}
+                  files={file.files}
+                />
+              ))}
             </div>
-          </div>
+          ))}
         </div>
       </div>
-
-      <footer>
-        <button className="mt-12 cursor-pointer bg-neutral-700 text-neutral-100 px-4 py-2 rounded font-bold text-sm">
-          Download file covers
-        </button>
-      </footer>
-    </main>
+    </div>
   );
 }
 

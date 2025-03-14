@@ -35,7 +35,7 @@ Generates files for each course type to make testing the file system easier. Thi
 
 - [x] Retrieve course type from URL
 - [x] Make file covers less boring
-- [ ] Rework UI to simulate folder structure
+- [x] Rework UI to simulate folder structure
 - [ ] File preview
 - [ ] Vitest
 - [ ] Command K

@@ -25,16 +25,6 @@ function App() {
         onCourseTypeChange={handleCourseTypeChange}
       />
     </main>
-      <main className="flex-1 overflow-hidden">
-        <div className="mx-auto h-full">
-          <ColumnLayout
-            key={courseType} // reset all columns when course type changes
-            courseType={courseType}
-            fileStructure={fileStructure}
-            onCourseTypeChange={handleCourseTypeChange}
-          />
-        </div>
-      </main>
   );
 }
 

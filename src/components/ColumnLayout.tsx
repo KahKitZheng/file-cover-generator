@@ -34,6 +34,8 @@ export default function ColumnLayout({
 
   const { generateFile } = useFileGeneration();
 
+  const columns = Array.from({ length: 5 }, (_, index) => index);
+
   const getColumnItems = useCallback(
     (column: number) => {
       let items: (string | FileType)[] = [];
@@ -573,9 +575,9 @@ export default function ColumnLayout({
   };
 
   return (
-    <div className="h-full overflow-x-auto">
-      <div className="grid h-full min-w-max grid-cols-5">
-        {[0, 1, 2, 3, 4].map((column) => (
+    <div className="h-full w-full rounded-2xl bg-white shadow-[0_0_10px_rgba(0,0,0,0.1)]">
+      <div className="grid h-full grid-cols-5 overflow-hidden">
+        {columns.map((column) => (
           <div key={column} className="h-full">
             {renderColumn(column)}
           </div>

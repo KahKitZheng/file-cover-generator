@@ -1,5 +1,5 @@
 import { PDFViewer } from "@react-pdf/renderer";
-import PDFDocument from "./PDFDocument";
+import { PDFTemplate } from "./PDFTemplate";
 
 interface PDFGeneratorProps {
   file: FileItem;
@@ -8,7 +8,7 @@ interface PDFGeneratorProps {
 export const PDFGenerator = ({ file }: PDFGeneratorProps) => {
   return (
     <PDFViewer style={{ width: "100%", height: "100vh" }} showToolbar={false}>
-      <PDFDocument file={file} />
+      <PDFTemplate file={file} />
     </PDFViewer>
   );
 };

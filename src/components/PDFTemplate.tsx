@@ -18,8 +18,8 @@ const pageBackgroundStyles = StyleSheet.create({
   background: {
     height: "100%",
     width: "100%",
-    position: "relative",
-    zIndex: 1,
+    position: "absolute",
+    zIndex: -1,
   },
 });
 
@@ -30,8 +30,6 @@ const contentStyles = StyleSheet.create({
     flexDirection: "column",
     height: "100%",
     width: "100%",
-    position: "absolute",
-    zIndex: 5,
   },
   courseType: {
     fontSize: 12,
@@ -44,7 +42,7 @@ const contentStyles = StyleSheet.create({
     flexWrap: "wrap",
   },
   fileName: {
-    fontSize: 48,
+    fontSize: 44,
     fontWeight: "bold",
     lineHeight: 1,
   },

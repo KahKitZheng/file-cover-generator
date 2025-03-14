@@ -5,7 +5,7 @@ export default function YellowBlob() {
     blob: {
       position: "absolute",
       top: -200,
-      right: -500,
+      right: -385,
       width: 700,
       height: 700,
     },

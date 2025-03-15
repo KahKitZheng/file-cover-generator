@@ -6,14 +6,22 @@ export function useFileGeneration() {
   /**
    * Generates a single file and downloads it
    */
-  const generateFile = async (file: FileItem, download: boolean) => {
+  const generateFile = async (
+    file: FileItem,
+    courseType: string,
+    download: boolean,
+  ) => {
     const updatedFile = { ...file };
 
     // Generate and download the file
     const content = await generatePDFContent(updatedFile);
 
     if (download) {
-      downloadFile(content, `${file.name}.${file.fileFormat}`);
+      const fileName =
+        file.type === "course-wide"
+          ? `${courseType}-${file.fileType}-course-wide.pdf`
+          : `${courseType}-${file.fileType}-${file.type}-${file.order}.pdf`;
+      downloadFile(content, fileName);
     }
 
     return updatedFile;
@@ -29,7 +37,7 @@ export function useFileGeneration() {
     // Generate all files
     for (let i = 0; i < totalFiles; i++) {
       const file = filesToGenerate[i];
-      const generatedFile = await generateFile(file, false);
+      const generatedFile = await generateFile(file, "", false);
       generatedFiles.push(generatedFile);
     }
 

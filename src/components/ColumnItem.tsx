@@ -22,7 +22,7 @@ export function ColumnItem({
 
   return (
     <div
-      className={`flex cursor-pointer justify-between gap-2 rounded p-2 text-xs ${
+      className={`flex cursor-pointer justify-between gap-4 rounded p-2 text-xs ${
         isActive ? "bg-neutral-300 text-neutral-700" : ""
       }`}
       onClick={onClick}
@@ -31,7 +31,7 @@ export function ColumnItem({
         <Icon
           size={12}
           strokeWidth={1.5}
-          className="mt-0.5 fill-amber-400 stroke-amber-700"
+          className={`mt-0.5 ${Icon.displayName === "FileText" ? "fill-neutral-50" : "fill-amber-400 stroke-amber-700"}`}
           fill=""
         />
         <p className="font-medium">{label}</p>

@@ -1,5 +1,11 @@
 import { useState, useCallback, useEffect } from "react";
 import { COURSE_TYPES } from "../constants/course-types";
+import {
+  downloadAllFiles,
+  downloadSubgroupFiles,
+  downloadFileTypeFiles,
+  downloadScopeFiles,
+} from "../utils/downloadWithStructure";
 
 type Selection = {
   subgroup: string | null;
@@ -17,7 +23,11 @@ type UseColumnNavigationProps = {
   courseType: string;
   fileStructure: FileStructure;
   onCourseTypeChange: (courseType: string) => void;
-  generateFile: (file: FileItem, download: boolean) => void;
+  generateFile: (
+    file: FileItem,
+    courseType: string,
+    download: boolean,
+  ) => Promise<FileItem>;
 };
 
 export function useColumnNavigation({
@@ -198,7 +208,7 @@ export function useColumnNavigation({
   );
 
   const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
+    async (e: KeyboardEvent) => {
       // Only handle keyboard events when the column layout is focused
       const columnLayout = document.querySelector(
         '[data-column-layout="true"]',
@@ -246,24 +256,57 @@ export function useColumnNavigation({
             switch (focus.column) {
               case 0:
                 onCourseTypeChange(selectedItem as string);
+                await downloadAllFiles(fileStructure, courseType);
                 break;
               case 1:
                 setSelection((prev) => ({
                   ...prev,
                   subgroup: selectedItem as string,
                 }));
+                await downloadSubgroupFiles(
+                  fileStructure[selectedItem as string],
+                  courseType,
+                  selectedItem as string,
+                );
                 break;
               case 2:
                 setSelection((prev) => ({
                   ...prev,
                   fileType: selectedItem as string,
                 }));
+                if (selection.subgroup) {
+                  const selectedFile = fileStructure[selection.subgroup].find(
+                    (f: CourseTypeTemplate) => f.name === selectedItem,
+                  );
+                  if (selectedFile) {
+                    await downloadFileTypeFiles(
+                      selectedFile.files,
+                      courseType,
+                      selectedItem as string,
+                    );
+                  }
+                }
                 break;
               case 3:
                 setSelection((prev) => ({
                   ...prev,
                   scope: selectedItem as FileType,
                 }));
+                if (selection.subgroup && selection.fileType) {
+                  const selectedFile = fileStructure[selection.subgroup].find(
+                    (f: CourseTypeTemplate) => f.name === selection.fileType,
+                  );
+                  if (selectedFile) {
+                    const scopeFiles = selectedFile.files.filter(
+                      (f) => f.type === selectedItem,
+                    );
+                    await downloadScopeFiles(
+                      scopeFiles,
+                      courseType,
+                      selectedItem as string,
+                    );
+                  }
+                }
                 break;
               case 4:
                 if (selection.subgroup && selection.fileType) {
@@ -274,7 +317,11 @@ export function useColumnNavigation({
                     (f) => f.id === selectedItem,
                   );
                   if (fileToGenerate) {
-                    generateFile(fileToGenerate, true);
+                    const fileWithType = {
+                      ...fileToGenerate,
+                      fileType: selection.fileType,
+                    };
+                    await generateFile(fileWithType, courseType, true);
                   }
                 }
                 break;
@@ -324,6 +371,7 @@ export function useColumnNavigation({
       fileStructure,
       selection,
       generateFile,
+      courseType,
     ],
   );
 

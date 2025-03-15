@@ -44,12 +44,12 @@ export default function ColumnLayout() {
 
   return (
     <div
-      className="grid flex-1 grid-cols-5 overflow-hidden rounded-t-2xl focus:outline-2 focus:outline-neutral-400"
+      className="grid min-h-0 flex-1 grid-cols-5 overflow-hidden rounded-t-2xl focus:outline-2 focus:outline-neutral-400"
       tabIndex={1}
       data-column-layout="true"
     >
       {columns.map((column) => (
-        <div key={column} className="h-full">
+        <div key={column} className="h-full min-h-0">
           <ColumnRenderer
             column={column}
             courseType={courseType}

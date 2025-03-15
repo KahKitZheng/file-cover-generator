@@ -5,8 +5,13 @@ import { Column } from "./Column";
 import { ColumnItem } from "./ColumnItem";
 import { DownloadButton } from "./DownloadButton";
 import { COURSE_TYPES } from "../constants/course-types";
-import { downloadFileTypeAsZip } from "../utils/downloadFileTypeAsZip";
 import { useFileGeneration } from "../hooks/useFileGeneration";
+import {
+  downloadAllFiles,
+  downloadSubgroupFiles,
+  downloadFileTypeFiles,
+  downloadScopeFiles,
+} from "../utils/downloadWithStructure";
 
 type Selection = {
   subgroup: string | null;
@@ -81,10 +86,43 @@ export function ColumnRenderer({
 
   const selectedFileItem = files.find((f) => f.id === selection.fileId);
 
+  // Download handlers for each column
+  const handleDownloadAll = async () => {
+    await downloadAllFiles(fileStructure, courseType);
+  };
+
+  const handleDownloadSubgroup = async (subgroup: string) => {
+    await downloadSubgroupFiles(fileStructure[subgroup], courseType, subgroup);
+  };
+
+  const handleDownloadFileType = async (file: CourseTypeTemplate) => {
+    await downloadFileTypeFiles(file.files, courseType, file.name);
+  };
+
+  const handleDownloadScope = async (scope: FileType) => {
+    if (selectedFile) {
+      const scopeFiles = selectedFile.files.filter((f) => f.type === scope);
+      await downloadScopeFiles(scopeFiles, courseType, scope);
+    }
+  };
+
+  const handleDownloadFile = async (file: FileItem) => {
+    if (selection.fileType) {
+      const fileWithType = {
+        ...file,
+        fileType: selection.fileType,
+      };
+      await generateFile(fileWithType, courseType, true);
+    }
+  };
+
   switch (column) {
     case 0:
       return (
-        <Column title="Course Type">
+        <Column
+          title="Course Type"
+          selectedIndex={focus.column === 0 ? focus.index : undefined}
+        >
           {COURSE_TYPES.map((type, index) => (
             <ColumnItem
               key={type}
@@ -102,16 +140,9 @@ export function ColumnRenderer({
               }}
               downloadButton={
                 <DownloadButton
-                  onClick={(e) => {
+                  onClick={async (e) => {
                     e.stopPropagation();
-                    const allFiles = Object.values(fileStructure).flatMap(
-                      (subgroup) => subgroup.flatMap((file) => file.files),
-                    );
-                    downloadFileTypeAsZip(
-                      courseType,
-                      `${type}-files-complete`,
-                      allFiles,
-                    );
+                    await handleDownloadAll();
                   }}
                 />
               }
@@ -122,7 +153,10 @@ export function ColumnRenderer({
 
     case 1:
       return (
-        <Column title="File Subgroup">
+        <Column
+          title="File Subgroup"
+          selectedIndex={focus.column === 1 ? focus.index : undefined}
+        >
           {Object.keys(fileStructure).length === 0 ? (
             <div className="flex items-center justify-center p-4 text-xs text-neutral-400">
               Select a course type
@@ -141,16 +175,9 @@ export function ColumnRenderer({
                 }}
                 downloadButton={
                   <DownloadButton
-                    onClick={(e) => {
+                    onClick={async (e) => {
                       e.stopPropagation();
-                      const subgroupFiles = fileStructure[subgroup].flatMap(
-                        (file) => file.files,
-                      );
-                      downloadFileTypeAsZip(
-                        courseType,
-                        `${subgroup}-files-complete`,
-                        subgroupFiles,
-                      );
+                      await handleDownloadSubgroup(subgroup);
                     }}
                   />
                 }
@@ -162,7 +189,10 @@ export function ColumnRenderer({
 
     case 2:
       return (
-        <Column title="File Type">
+        <Column
+          title="File Type"
+          selectedIndex={focus.column === 2 ? focus.index : undefined}
+        >
           {selection.subgroup &&
             fileStructure[selection.subgroup]?.map((file, index) => (
               <ColumnItem
@@ -177,9 +207,9 @@ export function ColumnRenderer({
                 }}
                 downloadButton={
                   <DownloadButton
-                    onClick={(e) => {
+                    onClick={async (e) => {
                       e.stopPropagation();
-                      downloadFileTypeAsZip(courseType, file.name, file.files);
+                      await handleDownloadFileType(file);
                     }}
                   />
                 }
@@ -190,7 +220,10 @@ export function ColumnRenderer({
 
     case 3:
       return (
-        <Column title="File Scope">
+        <Column
+          title="File Scope"
+          selectedIndex={focus.column === 3 ? focus.index : undefined}
+        >
           {selectedFile &&
             scopes.map((scope, index) => (
               <ColumnItem
@@ -205,16 +238,9 @@ export function ColumnRenderer({
                 }}
                 downloadButton={
                   <DownloadButton
-                    onClick={(e) => {
+                    onClick={async (e) => {
                       e.stopPropagation();
-                      const scopeFiles = selectedFile!.files.filter(
-                        (f) => f.type === scope,
-                      );
-                      downloadFileTypeAsZip(
-                        courseType,
-                        `${selection.fileType}-${scope}`,
-                        scopeFiles,
-                      );
+                      await handleDownloadScope(scope);
                     }}
                   />
                 }
@@ -225,7 +251,10 @@ export function ColumnRenderer({
 
     case 4:
       return (
-        <Column title="Files">
+        <Column
+          title="Files"
+          selectedIndex={focus.column === 4 ? focus.index : undefined}
+        >
           {files.map((file, index) => (
             <ColumnItem
               key={file.id}
@@ -238,7 +267,12 @@ export function ColumnRenderer({
                 onSelectionChange(4, file.id);
               }}
               downloadButton={
-                <DownloadButton onClick={() => generateFile(file, true)} />
+                <DownloadButton
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    await handleDownloadFile(file);
+                  }}
+                />
               }
             />
           ))}
@@ -247,7 +281,11 @@ export function ColumnRenderer({
 
     case 5:
       return (
-        <Column title="Preview" isLast>
+        <Column
+          title="Preview"
+          isLast
+          selectedIndex={focus.column === 5 ? focus.index : undefined}
+        >
           {selectedFileItem ? (
             <PDFViewer width="100%" height="100%" showToolbar={false}>
               <Document style={{ backgroundColor: "white" }}>

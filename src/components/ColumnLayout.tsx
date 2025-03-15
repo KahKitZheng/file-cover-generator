@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { FileText, Folder } from "lucide-react";
+import { FileText, Folder, FolderOpen } from "lucide-react";
 import { downloadFileTypeAsZip } from "../utils/downloadFileTypeAsZip";
 import { COURSE_TYPES } from "../constants/course-types";
 import { PDFViewer, Document } from "@react-pdf/renderer";
@@ -179,8 +179,36 @@ export default function ColumnLayout({
     ],
   );
 
+  // Reset all states when course type changes
+  useEffect(() => {
+    setFocusedColumn(0);
+    setFocusedIndex(0);
+    setSelectedSubgroup(null);
+    setSelectedFileType(null);
+    setSelectedScope(null);
+    setSelectedFileId(null);
+
+    // Focus the column layout after a short delay to ensure the DOM has updated
+    setTimeout(() => {
+      const columnLayout = document.querySelector(
+        '[data-column-layout="true"]',
+      );
+      if (columnLayout instanceof HTMLElement) {
+        columnLayout.focus();
+      }
+    }, 0);
+  }, [courseType]);
+
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
+      // Only handle keyboard events when the column layout is focused
+      const columnLayout = document.querySelector(
+        '[data-column-layout="true"]',
+      );
+      if (document.activeElement !== columnLayout) {
+        return;
+      }
+
       const items = getColumnItems(focusedColumn);
       const maxIndex = items.length - 1;
       let selectedItem: string | FileType | undefined;
@@ -360,23 +388,38 @@ export default function ColumnLayout({
     let scopes: FileType[] = [];
     let files: FileItem[] = [];
 
-    if (selectedSubgroup && selectedFileType) {
+    // Only try to find the selected file if we have both subgroup and file type selected
+    if (
+      selectedSubgroup &&
+      selectedFileType &&
+      fileStructure[selectedSubgroup]
+    ) {
       selectedFile = fileStructure[selectedSubgroup].find(
         (f: CourseTypeTemplate) => f.name === selectedFileType,
       );
     }
 
+    // Only get scopes if we have a selected file
     if (selectedFile) {
       scopes = ["course-wide", "chapter", "tile"].filter((scope: string) =>
         selectedFile?.files.some((f: FileItem) => f.type === scope),
       ) as FileType[];
     }
 
-    if (selectedSubgroup && selectedFileType && selectedScope) {
+    // Only get files if we have all necessary selections
+    if (
+      selectedSubgroup &&
+      selectedFileType &&
+      selectedScope &&
+      fileStructure[selectedSubgroup]
+    ) {
+      const subgroupFiles = fileStructure[selectedSubgroup];
+      const fileTemplate = subgroupFiles.find(
+        (f: CourseTypeTemplate) => f.name === selectedFileType,
+      );
       files =
-        fileStructure[selectedSubgroup]
-          .find((f: CourseTypeTemplate) => f.name === selectedFileType)
-          ?.files.filter((f: FileItem) => f.type === selectedScope) ?? [];
+        fileTemplate?.files.filter((f: FileItem) => f.type === selectedScope) ??
+        [];
     }
 
     const selectedFileItem = files.find((f) => f.id === selectedFileId);
@@ -388,7 +431,11 @@ export default function ColumnLayout({
             {COURSE_TYPES.map((type, index) => (
               <ColumnItem
                 key={type}
-                icon={Folder}
+                icon={
+                  courseType.toLowerCase() === type.toLowerCase()
+                    ? FolderOpen
+                    : Folder
+                }
                 label={type}
                 isSelected={courseType.toLowerCase() === type.toLowerCase()}
                 isFocused={focusedColumn === 0 && focusedIndex === index}
@@ -428,7 +475,7 @@ export default function ColumnLayout({
               Object.keys(fileStructure).map((subgroup, index) => (
                 <ColumnItem
                   key={subgroup}
-                  icon={Folder}
+                  icon={selectedSubgroup === subgroup ? FolderOpen : Folder}
                   label={subgroup}
                   isSelected={selectedSubgroup === subgroup}
                   isFocused={focusedColumn === 1 && focusedIndex === index}
@@ -462,11 +509,11 @@ export default function ColumnLayout({
         return (
           <Column title="File Type">
             {selectedSubgroup &&
-              fileStructure[selectedSubgroup].map(
+              fileStructure[selectedSubgroup]?.map(
                 (file: CourseTypeTemplate, index) => (
                   <ColumnItem
                     key={file.name}
-                    icon={Folder}
+                    icon={selectedFileType === file.name ? FolderOpen : Folder}
                     label={file.name}
                     isSelected={selectedFileType === file.name}
                     isFocused={focusedColumn === 2 && focusedIndex === index}
@@ -500,7 +547,7 @@ export default function ColumnLayout({
               scopes.map((scope, index) => (
                 <ColumnItem
                   key={scope}
-                  icon={Folder}
+                  icon={selectedScope === scope ? FolderOpen : Folder}
                   label={scope}
                   isSelected={selectedScope === scope}
                   isFocused={focusedColumn === 3 && focusedIndex === index}
@@ -575,14 +622,16 @@ export default function ColumnLayout({
   };
 
   return (
-    <div className="h-full w-full rounded-2xl bg-white shadow-[0_0_10px_rgba(0,0,0,0.1)]">
-      <div className="grid h-full grid-cols-5 overflow-hidden">
-        {columns.map((column) => (
-          <div key={column} className="h-full">
-            {renderColumn(column)}
-          </div>
-        ))}
-      </div>
+    <div
+      className="grid flex-1 grid-cols-5 overflow-hidden rounded-t-2xl focus:outline-2 focus:outline-neutral-400"
+      tabIndex={1}
+      data-column-layout="true"
+    >
+      {columns.map((column) => (
+        <div key={column} className="h-full">
+          {renderColumn(column)}
+        </div>
+      ))}
     </div>
   );
 }

@@ -22,14 +22,19 @@ export function ColumnItem({
 
   return (
     <div
-      className={`flex cursor-pointer justify-between rounded p-2 text-xs ${
-        isActive ? "bg-neutral-800 text-neutral-100" : ""
+      className={`flex cursor-pointer justify-between gap-2 rounded p-2 text-xs ${
+        isActive ? "bg-neutral-300 text-neutral-700" : ""
       }`}
       onClick={onClick}
     >
       <div className="flex gap-2">
-        <Icon size={12} strokeWidth={2.5} className="mt-0.5" />
-        <span className="font-medium">{label}</span>
+        <Icon
+          size={12}
+          strokeWidth={1.5}
+          className="mt-0.5 fill-amber-400 stroke-amber-700"
+          fill=""
+        />
+        <p className="font-medium">{label}</p>
       </div>
       {downloadButton}
     </div>

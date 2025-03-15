@@ -36,12 +36,19 @@ Generates files for each course type to make testing the file system easier. Thi
 - [x] Retrieve course type from URL
 - [x] Make file covers less boring
 - [x] Rework UI to simulate folder structure
-- [ ] File preview
 - [ ] Vitest
-- [ ] Command K
+- [ ] File preview?
+- [ ] Command K?
 - [ ] Download only selected files
 
 ## Could haves
 
 - [ ] Course, chapter, tile covers???
 - [ ] Exception files
+
+# Built with
+
+- React
+- React pdf
+- Tailwind CSS
+- Lucide icons

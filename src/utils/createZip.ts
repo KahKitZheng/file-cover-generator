@@ -1,14 +1,21 @@
 import JSZip from "jszip";
 import { generatePDFContent } from "./generatePDFContent";
 
+type ZipStructureOptions = {
+  includeFileSubgroup?: boolean;
+  includeFileType?: boolean;
+  includeFileScope?: boolean;
+};
+
 /**
  * Creates a zip file with the given files maintaining folder structure
  */
 export async function createZipWithFiles(
   files: FileItem[],
-  options: { categoryFolder?: boolean; typeFolder?: boolean } = {
-    categoryFolder: true,
-    typeFolder: true,
+  options: ZipStructureOptions = {
+    includeFileSubgroup: true,
+    includeFileType: true,
+    includeFileScope: true,
   },
 ): Promise<Blob> {
   const zip = new JSZip();
@@ -17,15 +24,23 @@ export async function createZipWithFiles(
     const content = await generatePDFContent(file);
     let folder = zip;
 
-    if (options.categoryFolder) {
-      folder = zip.folder(file.type) || zip;
+    // Add file to appropriate folder based on structure options
+    if (options.includeFileSubgroup && file.subgroup) {
+      folder = zip.folder(file.subgroup) || zip;
     }
 
-    if (options.typeFolder) {
+    if (options.includeFileType && file.fileType) {
+      folder = folder.folder(file.fileType) || folder;
+    }
+
+    if (options.includeFileScope) {
       folder = folder.folder(file.type) || folder;
     }
 
-    folder.file(`${file.name}.${file.fileFormat}`, content);
+    folder.file(
+      `${file.name}${file.order ? ` ${file.order}` : ""}.${file.fileFormat}`,
+      content,
+    );
   }
 
   return zip.generateAsync({ type: "blob" });

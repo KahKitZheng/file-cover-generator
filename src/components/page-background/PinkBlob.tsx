@@ -5,7 +5,7 @@ export default function PinkBlob() {
     blob: {
       position: "absolute",
       bottom: -325,
-      right: -500,
+      right: -385,
       width: 600,
       height: 600,
     },

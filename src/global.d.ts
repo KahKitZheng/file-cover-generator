@@ -23,4 +23,6 @@ type FileItem = {
   type: FileType;
   fileFormat: FileFormat;
   order?: number;
+  subgroup?: string;
+  fileType?: string;
 };

@@ -44,7 +44,7 @@ export default function ColumnLayout() {
 
   return (
     <div
-      className="grid min-h-0 flex-1 grid-cols-5 overflow-hidden rounded-t-2xl focus:outline-2 focus:outline-neutral-400"
+      className="focus:ring-opacity-50 grid min-h-0 flex-1 grid-cols-5 overflow-hidden rounded-t-2xl ring-[var(--theme-focus-ring)] focus:ring-2 focus:outline-none"
       tabIndex={1}
       data-column-layout="true"
     >

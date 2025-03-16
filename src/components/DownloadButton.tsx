@@ -7,7 +7,7 @@ type DownloadButtonProps = {
 export function DownloadButton({ onClick }: DownloadButtonProps) {
   return (
     <button
-      className="-mt-0.5 h-fit cursor-pointer rounded p-1 opacity-25 hover:bg-neutral-500 hover:text-neutral-100 hover:opacity-100"
+      className={`focus:ring-opacity-50 -mt-0.5 h-fit cursor-pointer rounded p-1 opacity-25 ring-[var(--theme-focus-ring)] transition-all hover:bg-[var(--theme-accent)] hover:opacity-100 focus:ring-2 focus:outline-none`}
       onClick={onClick}
       tabIndex={-1}
     >

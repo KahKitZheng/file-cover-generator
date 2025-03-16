@@ -1,4 +1,5 @@
 import { ReactNode, useEffect, useRef } from "react";
+import { useTheme } from "../contexts/ThemeContext";
 
 type ColumnProps = {
   title: string;
@@ -14,6 +15,9 @@ export function Column({
   selectedIndex,
 }: ColumnProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
+
+  const isDark = theme === "dark";
 
   useEffect(() => {
     if (selectedIndex !== undefined && scrollContainerRef.current) {
@@ -31,9 +35,15 @@ export function Column({
 
   return (
     <div
-      className={`flex h-full min-h-0 flex-col border-b border-neutral-200 ${!isLast ? "border-r border-neutral-200" : ""}`}
+      className={`flex h-full min-h-0 flex-col border-b ${
+        isDark ? "border-neutral-700" : "border-neutral-200"
+      } ${!isLast ? "border-r border-neutral-200" : ""}`}
     >
-      <p className="flex-none border-b border-neutral-200 p-2 px-4 text-xs font-semibold">
+      <p
+        className={`flex-none border-b ${
+          isDark ? "border-neutral-700" : "border-neutral-200"
+        } p-2 px-4 text-xs font-semibold`}
+      >
         {title}
       </p>
       <div

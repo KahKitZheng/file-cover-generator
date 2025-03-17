@@ -1,5 +1,5 @@
-import { useTheme } from "../contexts/ThemeContext";
-import type { Theme } from "../contexts/ThemeContext";
+import { useTheme } from "../../contexts/ThemeContext";
+import type { Theme } from "../../contexts/ThemeContext";
 
 export function ThemeSelector() {
   const { theme, setTheme } = useTheme();

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { LucideIcon } from "lucide-react";
-import { useTheme } from "../contexts/ThemeContext";
+import { useTheme } from "../../../contexts/ThemeContext";
 
 type ColumnItemProps = {
   icon: LucideIcon;

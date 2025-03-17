@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useRef } from "react";
-import { useTheme } from "../contexts/ThemeContext";
+import { useTheme } from "../../../contexts/ThemeContext";
 
 type ColumnProps = {
   title: string;

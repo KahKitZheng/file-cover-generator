@@ -1,12 +1,12 @@
-import { FileGeneratorProvider } from "../contexts/FileGeneratorContext";
-import { useFileGenerator } from "../contexts/FileGeneratorContext";
-import { NumberInput } from "./NumberInput";
 import ColumnLayout from "./ColumnLayout";
-import { ThemeProvider } from "../contexts/ThemeContext";
-import { ThemeSelector } from "./ThemeSelector";
-import { useTheme } from "../contexts/ThemeContext";
+import { NumberInput } from "../common/NumberInput";
 import { CSSProperties } from "react";
-import { themeStyles } from "../styles/themes";
+import { useTheme } from "../../contexts/ThemeContext";
+import { themeStyles } from "../../styles/themes";
+import { ThemeProvider } from "../../contexts/ThemeContext";
+import { ThemeSelector } from "../theme/ThemeSelector";
+import { useFileGenerator } from "../../hooks/useFileGenerator";
+import { FileGeneratorProvider } from "../../contexts/FileGeneratorProvider";
 
 function AppContent() {
   const { numChapters, numTiles, handleValueChange } = useFileGenerator();

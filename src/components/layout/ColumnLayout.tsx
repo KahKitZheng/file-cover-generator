@@ -1,7 +1,7 @@
-import { useFileGenerator } from "../contexts/FileGeneratorContext";
-import { useFileGeneration } from "../hooks/useFileGeneration";
-import { useColumnNavigation } from "../hooks/useColumnNavigation";
-import { ColumnRenderer } from "./ColumnRenderer";
+import { useFileGenerator } from "../../hooks/useFileGenerator";
+import { useFileGeneration } from "../../hooks/useFileGeneration";
+import { useColumnNavigation } from "../../hooks/useColumnNavigation";
+import { ColumnRenderer } from "./columns/ColumnRenderer";
 
 export default function ColumnLayout() {
   const { courseType, fileStructure, handleValueChange } = useFileGenerator();

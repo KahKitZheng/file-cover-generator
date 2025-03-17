@@ -1,5 +1,5 @@
 import { pdf, Document } from "@react-pdf/renderer";
-import { PDFTemplate } from "../components/PDFTemplate";
+import { PDFTemplate } from "../components/pdf/PDFTemplate";
 import React from "react";
 
 export async function generatePDFContent(file: FileItem): Promise<Blob> {

@@ -1,8 +1,8 @@
 import { Page, Text, View, StyleSheet } from "@react-pdf/renderer";
-import BlueBlob from "./page-background/BlueBlob";
-import GreenBlob from "./page-background/GreenBlob";
-import PinkBlob from "./page-background/PinkBlob";
-import YellowBlob from "./page-background/YellowBlob";
+import BlueBlob from "../page-background/BlueBlob";
+import GreenBlob from "../page-background/GreenBlob";
+import PinkBlob from "../page-background/PinkBlob";
+import YellowBlob from "../page-background/YellowBlob";
 
 const pageStyles = StyleSheet.create({
   page: {

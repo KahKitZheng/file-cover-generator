@@ -1,17 +1,17 @@
 import { FileText, Folder, FolderOpen } from "lucide-react";
 import { PDFViewer, Document } from "@react-pdf/renderer";
-import { PDFTemplate } from "./PDFTemplate";
+import { PDFTemplate } from "../../pdf/PDFTemplate";
 import { Column } from "./Column";
 import { ColumnItem } from "./ColumnItem";
-import { DownloadButton } from "./DownloadButton";
-import { COURSE_TYPES } from "../constants/course-types";
-import { useFileGeneration } from "../hooks/useFileGeneration";
+import { DownloadButton } from "../../common/DownloadButton";
+import { COURSE_TYPES } from "../../../constants/course-types";
+import { useFileGeneration } from "../../../hooks/useFileGeneration";
 import {
   downloadAllFiles,
   downloadSubgroupFiles,
   downloadFileTypeFiles,
   downloadScopeFiles,
-} from "../utils/downloadWithStructure";
+} from "../../../utils/downloadWithStructure";
 
 type Selection = {
   subgroup: string | null;
